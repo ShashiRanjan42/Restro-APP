@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.home {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.menu-categories {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.menu-btn {
+  background-color: #ff5a60;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+}
+#root{
+flex:1;
+height: 100%;
+margin: 0;
+}
