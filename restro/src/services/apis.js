@@ -18,7 +18,10 @@ export const orderFood ={
 export const addFood ={
   ADD_FOOD: BASE_URL+"/api/addfood",
   // REMOVE_FOOD: BASE_URL+"/api/"${/:id}
+  GET_ALL_FOOD : BASE_URL + "/api/getAllFood",
+  DELETE_FOOD : BASE_URL + "/api"
 }
+
 
 //GET ORDER ENDPOINTS
 export const getorder={
@@ -34,6 +37,8 @@ export const addRemove={
 
 //PAYMENT
 export const payment={
-  CAP_PAY:BASE_URL+"/api/create-payment-intent",
-  VER_PAY:BASE_URL+"/api/post-payment"
+  // CAP_PAY:BASE_URL+"/api/create-payment-intent",
+  // VER_PAY:BASE_URL+"/api/post-payment"
+  CAP_PAY:BASE_URL+"/api/create-payment",
+  VER_PAY:BASE_URL+"/api/success-transaction"
 }

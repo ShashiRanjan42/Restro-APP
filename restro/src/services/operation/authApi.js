@@ -77,7 +77,7 @@ export function login(email, password, navigate) {
       const response = await apiConnector("POST", LOGIN_API, {
         email,
         password,
-      });
+      }, { withCredentials: true });
 
       if (!response.data.success) {
         throw new Error(response.data.message || "Login failed.");
