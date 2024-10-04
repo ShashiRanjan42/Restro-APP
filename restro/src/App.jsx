@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from "./pages/Home";
 import Menu from './pages/Menu';
 import AboutUs from './pages/AboutUs';
-import OrderOnline from './pages/OrderOnline';
 import Reservation from './pages/Reservation';
 import ContactUs from './pages/ContactUs';
 import Login from './pages/Login';
@@ -12,9 +11,10 @@ import Signup from './pages/Signup';
 import Cart from './pages/Cart';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import PrivateRoute from './components/privateRoute.jsx'; // Import the PrivateRoute component
+import { PrivateRoute, PrivateRouteAdmin, NormalRoute } from './components/privateRoute.jsx';
 import "./App.css";
 import AddProduct from './pages/addProduct.jsx';
+import PageNotFound from './pages/PageNotFound'; // Import PageNotFound component
 
 function App() {
   return (
@@ -27,15 +27,18 @@ function App() {
           <Route path="/about-us" element={<AboutUs />} />
           
           {/* Protected Routes using PrivateRoute */}
-          <Route path="/order-online" element={<PrivateRoute element={OrderOnline} />} />
           <Route path="/reservation" element={<PrivateRoute element={Reservation} />} />
           <Route path="/cart" element={<PrivateRoute element={Cart} />} />
-          <Route path="/addProduct" element={<PrivateRoute element={AddProduct} />} />
+          <Route path="/addProduct" element={<PrivateRouteAdmin element={AddProduct} />} />
 
           <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          {/* <Route path="/addProduct" element={<AddProduct />} /> */}
+          
+          {/* Normal Routes: Prevent logged-in users from accessing login/signup */}
+          <Route path="/login" element={<NormalRoute element={Login} />} />
+          <Route path="/signup" element={<NormalRoute element={Signup} />} />
+
+          {/* Wildcard route for handling 404 */}
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
         <Footer />
       </Router>

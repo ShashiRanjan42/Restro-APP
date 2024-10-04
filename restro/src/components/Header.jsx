@@ -2,15 +2,26 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../Redux/authSlice';
+import {jwtDecode} from 'jwt-decode'; // Correct import
 
 const Header = () => {
   const dispatch = useDispatch();
   
-  // Correctly get user info from Redux state
+  // Get token from Redux state
   const token = useSelector((state) => state.auth.token);
-  const userInfo = token;
-  console.log(token);
-  // console.log(userInfo);
+  let userRole = null;
+  let userName = null;
+
+  if (token) {
+    try {
+      // Decode the token and extract the role and name
+      const decodedToken = jwtDecode(token);
+      userRole = decodedToken.role;
+      userName = decodedToken.name;
+    } catch (error) {
+      console.error("Invalid token");
+    }
+  }
   
   // Logout function
   const handleLogout = () => {
@@ -26,26 +37,50 @@ const Header = () => {
       
       {/* Navigation Links */}
       <nav>
-        <ul className="flex space-x-6 text-lg">
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/menu">Menu</Link></li>
-          <li><Link to="/about-us">About Us</Link></li>
-          <li><Link to="/order-online">Order Online</Link></li>
-          <li><Link to="/reservation">Reservation</Link></li>
-          <li><Link to="/contact-us">Contact Us</Link></li>
-        </ul>
+        {
+          userRole === "user" ? (
+            <ul className="flex space-x-6 text-lg">
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/menu">Menu</Link></li>
+              <li><Link to="/about-us">About Us</Link></li>
+              {/* <li><Link to="/order-online">Order Online</Link></li> */}
+              <li><Link to="/reservation">Reservation</Link></li>
+              <li><Link to="/contact-us">Contact Us</Link></li>
+            </ul>
+          ) : userRole === "admin" ? (
+            <ul className="flex space-x-6 text-lg">
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/menu">Product</Link></li>
+              <li><Link to="/addProduct">Add Product</Link></li>
+            </ul>
+          ) : 
+          (<ul className="flex space-x-6 text-lg">
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/menu">Menu</Link></li>
+              <li><Link to="/about-us">About Us</Link></li>
+              {/* <li><Link to="/order-online">Order Online</Link></li> */}
+              <li><Link to="/reservation">Reservation</Link></li>
+              <li><Link to="/contact-us">Contact Us</Link></li>
+            </ul>
+          )
+        }
       </nav>
       
       {/* Action Buttons (Cart, Log In, Sign Up or User Icon, Logout) */}
       <div className="nav-actions flex space-x-4">
-        {/* Cart Icon */}
-        <Link to="/cart" className="text-2xl">🛒</Link>
+        {/* Conditionally render Cart Icon only for non-admin users */}
+        {userRole === "user" && (
+          <Link to="/cart" className="text-2xl">🛒</Link>
+        )}
         
         {/* Conditionally render Log In/Sign Up or User Icon/Logout */}
-        {userInfo ? (
+        {token ? (
           <div className="flex items-center space-x-4">
-            {/* User Icon */}
-            <div className="user-icon text-2xl">👤</div>
+            {/* User Icon and Name */}
+            <div className='flex items-center space-x-2'>
+              <div className="user-icon text-2xl">👤</div>
+              <div className="font-bold text-gray-800">{userName}</div>
+            </div>
             
             {/* Logout Button */}
             <button 

@@ -1,21 +1,30 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { addProductToCart } from '../Redux/cartSlices';
 import { toast, Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Card = ({ food }) => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
+  const token = useSelector((state) => state.auth.token);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleAddToCart = () => {
+    // Check if the user is logged in (check for token)
+    if (!token) {
+      toast.error('Please log in to add items to the cart.');
+      return navigate('/login'); // Redirect to login if no token
+    }
+
     // Check if the item is already in the cart
     const isItemInCart = cartItems.some(item => item.foodId === food._id);
 
     if (isItemInCart) {
-      toast.error('Item is already in the cart!'); // Use toast.error for errors
+      toast.error('Item is already in the cart!'); // Show error toast if the item is already in the cart
     } else {
       // Dispatch action to add the product to the cart
       dispatch(addProductToCart({ foodId: food._id, quantity: 1 }));
-      toast.success('Item added to cart successfully!'); // Use toast.success for success messages
+      toast.success('Item added to cart successfully!'); // Show success toast
     }
   };
 
