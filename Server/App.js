@@ -12,7 +12,13 @@ app.use(express.urlencoded({ limit: '16kb' }));
 app.use(cookieParser());
 database.connect();
 
-app.use(cors());
+const corsOptions = {
+  origin: 'https://restro-app-rust.vercel.app',
+  credentials: true,
+  optionSuccessStatus: 200
+}
+
+app.use(cors(corsOptions));
 
 // Setting up routes
 const userRoute = require("./Router/userRouter");
@@ -34,5 +40,5 @@ const Payment = require('./Router/PaymentRoute');
 app.use('/api/payments', Payment);
 
 app.listen(PORT, () => {
-    console.log(`App is listening at ${PORT}`);
+  console.log(`App is listening at ${PORT}`);
 });
