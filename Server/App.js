@@ -1,41 +1,38 @@
 const express = require("express");
 require('dotenv').config();
-const cors=require("cors");
+const cors = require("cors");
 const database = require('../Server/Database/mongodb');
 var cookieParser = require('cookie-parser')
-// const bodyParser = require('body-parser');
 
-const app=express();
+const app = express();
 
-const PORT = process.env.PORT||8000;
+const PORT = process.env.PORT || 8000;
 app.use(express.json());
-app.use(express.urlencoded({limit: '16kb'}));
+app.use(express.urlencoded({ limit: '16kb' }));
 app.use(cookieParser());
-// app.use(bodyParser.urlencoded({ extended: true }));
 database.connect();
 
-const corsOptions = {
-    origin: '*',            //access-control-allow-credentials:true
-    optionSuccessStatus: 200,
-}
+app.use(cors());
 
-app.use(cors(corsOptions));
-
-//setting up routes
+// Setting up routes
 const userRoute = require("./Router/userRouter");
-app.use('/api',userRoute);
+app.use('/api/users', userRoute);
+
 const addFood = require("./Router/addfoodRouter");
-app.use('/api',addFood);
-// const addFood = require("./Router/addfoodRouter");
-// app.use('/api',getAllFood);
+app.use('/api/foods', addFood);
+
 const cartRoute = require('./Router/CartRouter');
-app.use('/api',cartRoute);
+app.use('/api/carts', cartRoute);
+
 const OrderRoute = require('./Router/OrderRouter');
-app.use('/api',OrderRoute);
+app.use('/api/orders', OrderRoute);
+
 const GetOrder = require('./Router/getOrderRouter');
-app.use('/api',GetOrder);
+app.use('/api/getorders', GetOrder);
+
 const Payment = require('./Router/PaymentRoute');
-app.use('/api',Payment);
-app.listen(PORT,()=>{
+app.use('/api/payments', Payment);
+
+app.listen(PORT, () => {
     console.log(`App is listening at ${PORT}`);
 });
