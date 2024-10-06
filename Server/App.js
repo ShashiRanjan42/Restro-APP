@@ -16,7 +16,7 @@ database.connect();
 
 const allowedOrigins = [
   "http://localhost:3000", 
-  "https://restro-app-rust.vercel.app/"
+  "https://restro-app-rust.vercel.app"
 ];
 
 app.use(
