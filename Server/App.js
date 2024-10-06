@@ -14,14 +14,19 @@ app.use(cookieParser());
 // app.use(bodyParser.urlencoded({ extended: true }));
 database.connect();
 
+const allowedOrigins = ["http://localhost:3000", "https://restro-app-rust.vercel.app/"];
+
 app.use(
-	cors({
-		
-		origin: "http://localhost:3000",
-		// origin: "*",
-		// origin:"https://picland-azure.vercel.app/",
-		credentials: true,
-	})
+  cors({
+    origin: function (origin, callback) {
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, origin);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
 );
 
 //setting up routes
