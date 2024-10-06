@@ -14,40 +14,12 @@ app.use(cookieParser());
 // app.use(bodyParser.urlencoded({ extended: true }));
 database.connect();
 
-const allowedOrigins = [
-  "http://localhost:3000", 
-  "https://restro-app-rust.vercel.app"
-];
+const corsOptions = {
+    origin: '*',            //access-control-allow-credentials:true
+    optionSuccessStatus: 200,
+}
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (e.g., mobile apps or CURL requests)
-      if (!origin) {
-        console.log("Request has no origin, allowing request");
-        return callback(null, true);
-      }
-
-      if (allowedOrigins.includes(origin)) {
-        console.log(`Allowing request from origin: ${origin}`);
-        return callback(null, true); // Allow request
-      } else {
-        console.log(`Blocked by CORS: ${origin}`);
-        return callback(new Error("Not allowed by CORS")); // Block request
-      }
-    },
-    credentials: true, // Allow credentials (cookies, etc.) in CORS requests
-  })
-);
-
-// Example error handling middleware
-app.use((err, req, res, next) => {
-  if (err.message === "Not allowed by CORS") {
-    return res.status(403).json({ message: "CORS Error: Request blocked" });
-  }
-  next(err);
-});
-
+app.use(cors(corsOptions));
 
 //setting up routes
 const userRoute = require("./Router/userRouter");
