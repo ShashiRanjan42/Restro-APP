@@ -14,18 +14,15 @@ app.use(cookieParser());
 // app.use(bodyParser.urlencoded({ extended: true }));
 database.connect();
 
-// CORS Middleware
 app.use(
-  cors({
-    origin: "https://restro-app-rust.vercel.app",
-    credentials: true,
-    methods: "GET,POST,PUT,DELETE,OPTIONS",
-    allowedHeaders: "Content-Type,Authorization",
-  })
+	cors({
+		
+		origin: "http://localhost:3000",
+		// origin: "*",
+		// origin:"https://picland-azure.vercel.app/",
+		credentials: true,
+	})
 );
-
-app.options('*', cors());
-
 
 //setting up routes
 const userRoute = require("./Router/userRouter");
@@ -43,5 +40,5 @@ app.use('/api',GetOrder);
 const Payment = require('./Router/PaymentRoute');
 app.use('/api',Payment);
 app.listen(PORT,()=>{
-    console.log(`App is listening at ${PORT}`);
+    console.log(App is listening at ${PORT});
 });
