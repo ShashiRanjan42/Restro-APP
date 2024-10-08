@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 // API URL for cart operations
-const API_URL = 'http://localhost:4000/api/cart';
+const API_URL = 'http://restro-app-vese.onrender.com/api/cart';
 
 // Fetch cart items from the backend
 export const getCartItems = createAsyncThunk(
