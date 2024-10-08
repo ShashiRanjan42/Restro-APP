@@ -14,13 +14,16 @@ app.use(cookieParser());
 // app.use(bodyParser.urlencoded({ extended: true }));
 database.connect();
 
-const myOrigin = "https://restro-app-rust.vercel.app" || "http://restro-gamma.vercel.app";
+const allowedOrigins = [
+    "https://restro-app-rust.vercel.app",
+    "http://restro-gamma.vercel.app"
+];
 app.use(
 	cors({
 		
 		// origin: "http://localhost:3000",
 		// origin: "*",
-		origin: myOrigin,
+		origin: allowedOrigins,
 		credentials: true,
 	})
 );
